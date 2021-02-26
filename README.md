@@ -135,14 +135,15 @@ exjsonfiles = [
 ```
 2. import and nstantiate an instance of the medsuite interface class
 ```python3
-from AbeoMedsuite.medsuite import MedsuiteInterface
-msi = MedsuiteInterface()
+from AbeoMedsuite import medsuite
+msi = medsuite.MedsuiteInterface()
 ```
 3. load the medsuite spec with mappings to hank.ai fields
 ```python3
 msi.loadMedsuiteSpec(xlsfilepath=medsuitespecfp)
 ```
 
+#
 ### Process a single example record
 Returns the contents of the Medsuite import file (ascii string with newlines)
 ```python3
@@ -150,12 +151,13 @@ sji = msi.hde.sampleJSON() #get an example json from the hankHDE class
 msi.loadHankJSON(sji) #load the json
 msi.generateMedsuiteImport() 
 ```
-
+#
 ### Process multiple records together (i.e. batch)
 _Process MULTIPLE (i.e. batch) hank job jsons at once, grouping outputs by facility code_
 
 Load the contents of some hank.ai json examples
 ```python3
+import json
 jsonstrings = []
 print("Loading hank.ai job jsons ...")
 for ejf in exjsonfiles:
@@ -164,8 +166,8 @@ for ejf in exjsonfiles:
         with open(ejf, 'r') as f:
             jsonstrings.append(json.dumps(json.load(f)))
     except Exception as e:
-        print("  -> error ({})".format(e))
-        print("  -> continuing ...")
+      print("  -> error ({})".format(e))
+      print("  -> continuing ...")
 print("Done loading.")
 ```
 Convert the list of loaded json contents into a dictionary of facilitycode:medsuitefilecontents
@@ -183,7 +185,7 @@ for fac, content in outdict.items():
         f.write(content)
 print("DONE.")
 ```
-
+#
 
 <!-- ROADMAP -->
 ## Roadmap

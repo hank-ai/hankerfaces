@@ -5,6 +5,11 @@ from datetime import datetime, timedelta
 from dotmap import DotMap
 import json, copy
 from collections import defaultdict
+import os, sys
+currentdir = os.path.dirname(os.path.realpath(__file__))
+parentdir = os.path.dirname(currentdir)
+sys.path.append(parentdir)
+from hankHDE import HankHDE, specials_bidict
 
 #############################
 # move these mappings of provider and facility mappings to customer's medsuite ids 
@@ -317,63 +322,58 @@ class MedsuiteInterface():
 
 
 
-########################################
-########### USAGE EXAMPLES #############
-########################################
-import os, sys
-currentdir = os.path.dirname(os.path.realpath(__file__))
-parentdir = os.path.dirname(currentdir)
-sys.path.append(parentdir)
-from hankHDE import HankHDE, specials_bidict
+if 0:
+    ########################################
+    ########### USAGE EXAMPLES #############
+    ########################################
+    medsuitespecfp = 'Abeo Billing Export Layout V1.3_modHank.xlsx' #'G:/Shared drives/Hank.ai - ENGINEERING/Design, Specification and Architecture/Abeo Billing Export Layout V1.3_modHank.xlsx'
 
-medsuitespecfp = 'Abeo Billing Export Layout V1.3_modHank.xlsx' #'G:/Shared drives/Hank.ai - ENGINEERING/Design, Specification and Architecture/Abeo Billing Export Layout V1.3_modHank.xlsx'
-
-#instantiate the object
-msi = MedsuiteInterface()
-#load the medsuite spec with mappings to your (i.e. hank's) fields
-msi.loadMedsuiteSpec(xlsfilepath=medsuitespecfp)
+    #instantiate the object
+    msi = MedsuiteInterface()
+    #load the medsuite spec with mappings to your (i.e. hank's) fields
+    msi.loadMedsuiteSpec(xlsfilepath=medsuitespecfp)
 
 
-#############################
-## PROCESS A SINGLE RECORD ##
-#############################
-#process a SINGLE hank job json and get the ascii contents of a file to import into medsuite
-sji = msi.hde.sampleJSON() #get an example json from the hankHDE class
-msi.loadHankJSON(sji)
-msi.generateMedsuiteImport()
+    #############################
+    ## PROCESS A SINGLE RECORD ##
+    #############################
+    #process a SINGLE hank job json and get the ascii contents of a file to import into medsuite
+    sji = msi.hde.sampleJSON() #get an example json from the hankHDE class
+    msi.loadHankJSON(sji)
+    msi.generateMedsuiteImport()
 
 
-#######################################
-## PROCESS MULTIPLE RECORDS AS BATCH ##
-#######################################
-#process MULTIPLE (i.e. batch) hank job jsons at once and return a dict, grouped with keys representing unique facility codes, 
-#  of ascii strings to be written to file and imported into medsuites
-exjsonfiles = [
-    '../_hankSpecExamples/example.json', #'g:/Shared drives/Hank.ai - ACE - SHARED/Data Exchange/example.json'
-    '../_hankSpecExamples/example2.json', #'g:/Shared drives/Hank.ai - ACE - SHARED/Data Exchange/example2.json'
-    '../_hankSpecExamples/example3.json',
-    '../_hankSpecExamples/example4.json'
-]
-jsonstrings = []
-print("Loading hank.ai job jsons ...")
-for ejf in exjsonfiles:
-    print(" -> loading {}".format(ejf))
-    try:
-        with open(ejf, 'r') as f:
-            jsonstrings.append(json.dumps(json.load(f)))
-    except Exception as e:
-        print("  -> error ({})".format(e))
-        print("  -> continuing ...")
-print("Done loading.")
+    #######################################
+    ## PROCESS MULTIPLE RECORDS AS BATCH ##
+    #######################################
+    #process MULTIPLE (i.e. batch) hank job jsons at once and return a dict, grouped with keys representing unique facility codes, 
+    #  of ascii strings to be written to file and imported into medsuites
+    exjsonfiles = [
+        '../_hankSpecExamples/example.json', #'g:/Shared drives/Hank.ai - ACE - SHARED/Data Exchange/example.json'
+        '../_hankSpecExamples/example2.json', #'g:/Shared drives/Hank.ai - ACE - SHARED/Data Exchange/example2.json'
+        '../_hankSpecExamples/example3.json',
+        '../_hankSpecExamples/example4.json'
+    ]
+    jsonstrings = []
+    print("Loading hank.ai job jsons ...")
+    for ejf in exjsonfiles:
+        print(" -> loading {}".format(ejf))
+        try:
+            with open(ejf, 'r') as f:
+                jsonstrings.append(json.dumps(json.load(f)))
+        except Exception as e:
+            print("  -> error ({})".format(e))
+            print("  -> continuing ...")
+    print("Done loading.")
 
-outdict = msi.generateMedsuiteImportBATCH(jsonstringlist=jsonstrings)
+    outdict = msi.generateMedsuiteImportBATCH(jsonstringlist=jsonstrings)
 
-print("Writing medsuite import file outputs ...")
-for fac, content in outdict.items():
-    outfilename='medsuiteimport_{}.txt'.format(fac)
-    with open(outfilename, 'w') as f:
-        print(" -> writing {}".format(outfilename))
-        f.write(content)
-print("DONE.")
+    print("Writing medsuite import file outputs ...")
+    for fac, content in outdict.items():
+        outfilename='medsuiteimport_{}.txt'.format(fac)
+        with open(outfilename, 'w') as f:
+            print(" -> writing {}".format(outfilename))
+            f.write(content)
+    print("DONE.")
 
 # %%
