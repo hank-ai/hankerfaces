@@ -1,0 +1,264 @@
+{
+    "job": {
+      "claim": [
+        {
+          "entities": [
+            {
+              "type": "surgCPT",
+              "entityValue": "44180"
+            },
+            {
+              "type": "anesCPT",
+              "entityValue": "00790"
+            },
+            {
+              "type": "icd10",
+              "order": 2,
+              "entityValue": "k436"
+            },
+            {
+              "type": "icd10",
+              "order": 1,
+              "entityValue": "k660"
+            },
+            {
+              "type": "icd10",
+              "order": 3,
+              "entityValue": "t8189xa"
+            },
+            {
+              "type": "icd10",
+              "order": 4,
+              "entityValue": "g8918"
+            },
+            {
+              "type": "modifier",
+              "order": 1,
+              "entityValue": "qz"
+            },
+            {
+              "type": "modifier",
+              "order": 2,
+              "entityValue": "p3"
+            },
+            {
+              "type": "providerFirst",
+              "entityValue": "florence"
+            },
+            {
+              "type": "providerLast",
+              "entityValue": "nightingale"
+            },
+            {
+              "type": "providerCredentials",
+              "entityValue": "crna"
+            }
+          ],
+          "order": 1
+        },
+        {
+          "entities": [
+            {
+              "type": "surgCPT",
+              "entityValue": "64488"
+            },
+            {
+              "type": "icd10",
+              "order": 1,
+              "entityValue": "k436"
+            },
+            {
+              "type": "icd10",
+              "order": 2,
+              "entityValue": "k660"
+            },
+            {
+              "type": "icd10",
+              "order": 3,
+              "entityValue": "t8189xa"
+            },
+            {
+              "type": "icd10",
+              "order": 4,
+              "entityValue": "g8918"
+            },
+            {
+              "type": "modifier",
+              "order": 1,
+              "entityValue": "59"
+            },
+            {
+              "type": "providerFirst",
+              "entityValue": "william"
+            },
+            {
+              "type": "providerLast",
+              "entityValue": "osler"
+            },
+            {
+              "type": "providerCredentials",
+              "entityValue": "md"
+            }
+          ],
+          "order": 2
+        },
+        {
+          "entities": [
+            {
+              "type": "surgCPT",
+              "entityValue": "99140"
+            },
+            {
+              "type": "icd10",
+              "order": 1,
+              "entityValue": "k436"
+            },
+            {
+              "type": "icd10",
+              "order": 2,
+              "entityValue": "k660"
+            },
+            {
+              "type": "icd10",
+              "order": 3,
+              "entityValue": "t8189xa"
+            },
+            {
+              "type": "icd10",
+              "order": 4,
+              "entityValue": "g8918"
+            },
+            {
+              "type": "providerFirst",
+              "entityValue": "florence"
+            },
+            {
+              "type": "providerLast",
+              "entityValue": "nightingale"
+            },
+            {
+              "type": "providerCredentials",
+              "entityValue": "crna"
+            }
+          ],
+          "order": 3
+        }
+      ],
+      "input": {
+        "entities": [
+          {
+            "inputType": "text",
+            "createdTime": "2021-01-01 10:20:00",
+            "inputSource": "SurgeryProcedureDescription",
+            "content": "left total knee arthroplasty",
+            "inputId": "abcde-12345-fghij-67890"
+          },
+          {
+            "inputType": "text",
+            "createdTime": "2021-01-01 10:20:00",
+            "inputSource": "SurgeryDiagnosisDescription",
+            "content": "left knee degenerative arthritis and pain",
+            "inputId": "abcde-12345-fghij-67891"
+          }
+        ]
+      },
+      "patientInfo": {
+        "patient": {
+          "accn": "accn12345",
+          "dob": "1950-01-01 00:00:00",
+          "sex": "f",
+          "first": "patient",
+          "last": "zero",
+          "middle": "midname",
+          "mrn": "mrn1000003",
+          "ssn": "111-22-3333",
+          "phone": [
+            {
+              "number": "9044384265",
+              "type": "mobile"
+            }
+          ],
+          "address": [
+            {
+              "street1": "808 lady street",
+              "city": "columbia",
+              "state": "sc",
+              "zip": "29201"
+            }
+          ]
+        },
+        "guarantor": [
+          {
+            "first": "momma",
+            "last": "bear",
+            "phone": [
+              {
+                "number": "9044384265",
+                "type": "mobile"
+              }
+            ],
+            "address": [
+              {
+                "street1": "808 lady street",
+                "city": "columbia",
+                "state": "sc",
+                "zip": "29201"
+              }
+            ]
+          }
+        ],
+        "insurance": [
+          {
+            "company": "bcbs sc",
+            "groupId": "aa11111111",
+            "priority": "2"
+          },
+          {
+            "company": "medicare advantage",
+            "groupId": "z22222222z",
+            "priority": "1"
+          }
+        ]
+      },
+      "careTeam": [
+        {
+          "providerFirst": "william",
+          "providerLast": "osler",
+          "providerId": "5551",
+          "role": "AnesSupervisor",
+          "startTime": "2021-01-01 11:00:00",
+          "endTime": "2021-01-01 13:23:10"
+        },
+        {
+          "providerFirst": "florence",
+          "providerLast": "nightingale",
+          "providerId": "3331",
+          "role": "CRNA",
+          "startTime": "2021-01-01 11:00:00",
+          "endTime": "2021-01-01 13:23:10"
+        },
+        {
+          "providerFirst": "ivanna",
+          "providerLast": "cut",
+          "providerCredentials": "DO",
+          "role": "Surgeon"
+        }
+      ],
+      "facility": {
+        "name": "best surgery center",
+        "type": "outpatient",
+        "code": "bsc01",
+        "timeZone": "EST"
+      },
+      "jobInfo": {
+        "encounterNumber": "encn1001",
+        "anesType": "spinal",
+        "asaps": "3",
+        "emergent": "0",
+        "anesStartTime": "2021-01-01 11:00:00",
+        "anesEndTime": "2021-01-01 13:23:10",
+        "ORsuite": "or 3",
+        "OrsuiteId": "or3"
+      }
+    }
+  }
