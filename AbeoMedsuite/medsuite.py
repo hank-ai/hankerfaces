@@ -5,11 +5,13 @@ from datetime import datetime, timedelta
 from dotmap import DotMap
 import json, copy
 from collections import defaultdict
+
 import os, sys
 currentdir = os.path.dirname(os.path.realpath(__file__))
 parentdir = os.path.dirname(currentdir)
 sys.path.append(parentdir)
-from hankHDE import HankHDE, specials_bidict
+from hankHDE import HankHDE
+from include.defs import specials_bidict
 
 #############################
 # move these mappings of provider and facility mappings to customer's medsuite ids 
@@ -322,7 +324,7 @@ class MedsuiteInterface():
 
 
 
-if 0:
+if 1:
     ########################################
     ########### USAGE EXAMPLES #############
     ########################################

@@ -138,7 +138,7 @@ exjsonfiles = [
     '_hankSpecExamples/example4.json'
 ]
 ```
-2. import and nstantiate an instance of the medsuite interface class
+2. import and instantiate an instance of the medsuite interface class
 ```python3
 from AbeoMedsuite import medsuite
 msi = medsuite.MedsuiteInterface()
