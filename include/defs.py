@@ -1,3 +1,4 @@
+#%%
 #a bidirectional dictionary. call dictname.inverse to make the values the keys
 class bidict(dict):
     def __init__(self, *args, **kwargs):
@@ -24,7 +25,18 @@ class bidict(dict):
             del self.inverse[self[key]]
         super(bidict, self).__delitem__(key)
 
-
+#will cut val (a string) to length or pad it with padchars to output a fixed length string of length length
+#cutfrom: 'right' or 'left'. will remove characters from the side stated here if string is longer than length
+#padfrom: 'right' or 'left'. will pad string with padchar from the side stated here to output a string of defined length length
+def cutOrPad(val, length, cutfrom='right', padfrom='right', padchar=' '):
+    if len(val)>length: 
+        if cutfrom=='right': return val[:length]
+        else: return val[-length:]
+    elif len(val)<length:
+        if padfrom=='left': return val.rjust(length, padchar)
+        else: return val.ljust(length, padchar)
+    return val
+    
 specials_bidict = bidict({ #line item types based upon cpt codes, for billing data mapping
     'proc-line-arterial': ['36620', '36625'],
     'proc-line-central': ['36555', '36556', '36557', '36558'],

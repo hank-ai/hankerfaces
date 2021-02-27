@@ -11,11 +11,13 @@ currentdir = os.path.dirname(os.path.realpath(__file__))
 parentdir = os.path.dirname(currentdir)
 sys.path.append(parentdir)
 from hankHDE import HankHDE
-from include.defs import specials_bidict
+from include.defs import *
 
 #############################
-# move these mappings of provider and facility mappings to customer's medsuite ids 
-# into a loadable csv or something like that before go live
+# move these mappings of provider and facility mappings to customer's ids 
+# into a loadable csv or something similar
+### NOTE: according to Jeff Teasdale @ Abeo this mapping isn't actually necessary. They do the x-ref inside medsuites
+###   Just pass predictable provider and facility namestrings, human readable, replacing any spaces with dashes
 
 #the provider mapping is based upon first name, last name, and credentials concatenated together and lowercase
 providerMap = {
@@ -69,10 +71,10 @@ class MedsuiteInterface():
         #need to map provider names to medsuite provider Ids and facility name to medsuite facility Ids
         for x, claim in enumerate(self.hde.jobdm.claim):
             p = claim.entitiesGrouped.providerFirst[0]+claim.entitiesGrouped.providerLast[0]+claim.entitiesGrouped.providerCredentials[0]
-            pid = providerMap.get(p.lower())
+            pid = providerMap.get(p.lower(), p)
             #print(p, pid)
             self.hde.jobdm.claim[x].entitiesGrouped.medsuiteProviderId=[pid]
-        self.hde.jobdm.facility.medsuiteFacilityId = facilityMap.get(self.hde.jobdm.facility.code, 'NOMAPPING')
+        self.hde.jobdm.facility.medsuiteFacilityId = facilityMap.get(self.hde.jobdm.facility.code, self.hde.jobdm.facility.code)
 
    
     #loads 3 tables from xlsfilepath representing the field definitions, header definitions, and appendix definitions
@@ -95,18 +97,6 @@ class MedsuiteInterface():
         dtformat = el.get('medsuiteDtFormatStr')
         appxmap = el.get('appendixMap').upper()
         return elen, fn, man, hsm, dtformat, appxmap
-    
-    #will cut val (a string) to length or pad it with padchars to output a fixed length string of length length
-    #cutfrom: 'right' or 'left'. will remove characters from the side stated here if string is longer than length
-    #padfrom: 'right' or 'left'. will pad string with padchar from the side stated here to output a string of defined length length
-    def _cutOrPad(self, val, length, cutfrom='right', padfrom='right', padchar=' '):
-        if len(val)>length: 
-            if cutfrom=='right': return val[:length]
-            else: return val[-length:]
-        elif len(val)<length:
-            if padfrom=='left': return val.rjust(length, padchar)
-            else: return val.ljust(length, padchar)
-        return val
     
     #job is the hankspec job dotmap. optional. 
     #recordIdentifier is the section in the medsuite spec you're generating (i.e. H, 01, 02, ..., T)
@@ -145,7 +135,7 @@ class MedsuiteInterface():
                 print("Exception caught. {}".format(e))
                 newstr = ''
             if newstr=='' and man: raise Exception("Field '{}' in section '{}' is mandatory but no value found via json mapping ({}={}={})".format(fn, recordIdentifier, hsm, tout, otout))
-            outstr += self._cutOrPad(newstr, elen)
+            outstr += cutOrPad(newstr, elen)
         
         if totlen!=len(outstr): raise Exception('{} length is not equal. Expected {} chars, got {}.'.format(recordIdentifier, totlen, len(outstr)))
         return outstr

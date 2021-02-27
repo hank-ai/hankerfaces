@@ -72,8 +72,7 @@ hde.job
 #view the gruoped claim line items as a dict
 hde.job['claim'][0]['entitiesGrouped']
 #view the grouped claim line items as a dotmap
-hde.jobdm.claim[0].entitiesGrouped
-
+dict(hde.jobdm.claim[0].entitiesGrouped)
 
 
 # %%
