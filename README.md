@@ -61,6 +61,7 @@
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
+        <li><a href="#hankai-json-specification">Hank.ai Data Exchange Specification</a></li>
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
@@ -75,6 +76,8 @@
     <a href="#usage">Usage</a>
      <ul>
       <li><a href="#abeo-medsuite-conversion">Abeo Medsuite</a></li>
+      <li><a href="#painted-horse-international-phi-conversion">PHI (Painted Horse International)</a></li>
+      <li><a href="#blue9-neptune-conversion">blue9 Neptune</a></li>
      </ul>
     </li>
       <li><a href="#roadmap">Roadmap</a></li>
@@ -86,10 +89,13 @@
 </details>
 
 
-
+#
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-This project includes hank.ai examples, conversion classes (python), and resulting 3rd party input examples
+This project includes the hank.ai data-exchange specification and examples, conversion classes (python), and resulting 3rd party import examples
+
+### Hank.ai JSON Specification:
+* [Hank-AI-BillingandHealthDataExchange-Version-02-022021.JSON]('Hank-AI-BillingandHealthDataExchange-Version-02-022021.JSON') (note: best viewed as 'json with comments' in vscode)
 
 
 
@@ -97,14 +103,14 @@ This project includes hank.ai examples, conversion classes (python), and resulti
 
 * [python3]()
 * [hank.ai]()
-* [magic]()
+
 
 
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-To get a local copy up and running follow these simple steps.
+To get a local copy up and running follow these steps.
 
 ### Prerequisites
 
@@ -126,17 +132,12 @@ To get a local copy up and running follow these simple steps.
 
 <!-- USAGE EXAMPLES -->
 # Usage
+
 ## Abeo Medsuite conversion
 
 1. define file locations
 ```python3
 medsuitespecfp = 'AbeoMedsuite/Abeo Billing Export Layout V1.3_modHank.xlsx'
-exjsonfiles = [
-    '_hankSpecExamples/example.json',
-    '_hankSpecExamples/example2.json',
-    '_hankSpecExamples/example3.json',
-    '_hankSpecExamples/example4.json'
-]
 ```
 2. import and instantiate an instance of the medsuite interface class
 ```python3
@@ -145,7 +146,7 @@ msi = medsuite.MedsuiteInterface()
 ```
 3. load the medsuite spec with mappings to hank.ai fields
 ```python3
-msi.loadMedsuiteSpec(xlsfilepath=medsuitespecfp)
+msi.loadSpec(xlsfilepath=medsuitespecfp)
 ```
 
 #
@@ -153,8 +154,8 @@ msi.loadMedsuiteSpec(xlsfilepath=medsuitespecfp)
 Returns the contents of the Medsuite import file (ascii string with newlines)
 ```python3
 sji = msi.hde.sampleJSON() #get an example json from the hankHDE class
-msi.loadHankJSON(sji) #load the json
-msi.generateMedsuiteImport() 
+msi.loadHankJSON(sji) #load the hank.ai job json
+msi.convertFromHank() #convert it to medsuite format
 ```
 #
 ### Process multiple records together (i.e. batch)
@@ -163,6 +164,12 @@ _Process MULTIPLE (i.e. batch) hank job jsons at once, grouping outputs by facil
 Load the contents of some hank.ai json examples
 ```python3
 import json
+exjsonfiles = [
+    '_hankSpecExamples/example.json',
+    '_hankSpecExamples/example2.json',
+    '_hankSpecExamples/example3.json',
+    '_hankSpecExamples/example4.json'
+]
 jsonstrings = []
 print("Loading hank.ai job jsons ...")
 for ejf in exjsonfiles:
@@ -177,7 +184,7 @@ print("Done loading.")
 ```
 Convert the list of loaded json contents into a dictionary of facilitycode:medsuitefilecontents
 ```python3
-outdict = msi.generateMedsuiteImportBATCH(jsonstringlist=jsonstrings)
+outdict = msi.convertFromHankBatch(jsonstringlist=jsonstrings)
 ```
 
 Iterate over the dictionary and write out to files
@@ -190,6 +197,51 @@ for fac, content in outdict.items():
         f.write(content)
 print("DONE.")
 ```
+#
+
+## Painted Horse International (PHI) conversion:
+1. define file locations
+```python3
+phispecfp = 'PHI/spec.csv'
+```
+2. import and instantiate an instance of the phi interface class
+```python3
+from PHI import paintedhorse
+phi = paintedhorse.PaintedHorseInterface()
+```
+### Process a single example record (hank.ai -> phi)
+```
+under development
+```
+### Process a single example record (phi -> hank.ai)
+```
+under development
+```
+
+
+
+
+#
+
+## blue9 Neptune conversion:
+1. define file locations
+```python3
+neptunespecfp = 'blue9/spec.csv'
+```
+2. import and instantiate an instance of the neptune interface class
+```python3
+from blue9 import neptune
+nhi = neptune.NeptuneInterface()
+```
+### Process a single example record (hank.ai -> neptune)
+```
+under development
+```
+### Process a single example record (neptune -> hank.ai)
+```
+under development
+```
+
 #
 
 <!-- ROADMAP -->
@@ -232,6 +284,8 @@ Project Link: [https://github.com/hank-ai/hankerfaces](https://github.com/hank-a
 ## Acknowledgements
 
 * [abeo](https://abeo.com)
+* [phi](https://phimedos.com)
+* [blue9](https://blueninesystems.com)
 
 
 

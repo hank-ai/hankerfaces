@@ -1,0 +1,435 @@
+// Hank AI - Billing and Health Data Exchange - JSON Specification
+// VERSION 02.022021
+// Please view this file as a "JSON with comments" file type
+
+{
+
+    "job":{
+   
+
+        "claim": [ //'claim' is a list of 'line items' which are represented as items in the list herein
+        
+        
+            { // line item 1
+
+                "entities": [ //each 'line item' is made up of multiple 'entities' which are the key:value pairs for the respective line item
+
+                    {
+                        "entityValue": "entity value that represented type specified in type", 
+
+                        "order": 1, //used to indicate an order to a specific key:value pair passed. for example, if the line item had 3 ICD10 codes in a specific order, this order would be reflected by passing order 1, 2, and 3 respectively with the ICD10 entity list items
+
+                        "type": "See list of claim line item items at the bottom of this file"
+
+                    },
+                    {
+                        // ... additional line item entities
+                    }
+
+                ],   
+
+                "order": 1    //used to indicate an order to the claim line items
+                    
+            },
+            { // line item 2 ... n
+                // ...
+            }
+        ],
+
+        "input": { //inputs are the notes, medical record, or media items which go with this claim
+
+            "entities": [ // list of notes, medical records, media items, etc.
+
+                { // item 1
+
+                    "inputType": "text", //format of the content sent for this entity. can be text, pdf, jpg, gif, etc 
+
+                    "createdTime": "YYYY-MM-DD HH:MM:SS", //date of the note in the claim as entered by care team
+
+                    "serviceTime": "YYYY-MM-DD HH:MM:SS", //actual date of service as entered by care team
+                    
+                    "lastModifiedTime": "YYYY-MM-DD HH:MM:SS", //date note was changed, audit trail item for the note
+
+                    "inputSource": "See list of input entity source types at the bottom of this file" , //search for "Input Source List"
+
+                    "content": "Content representing type specified in inputType", //may be ascii text or a bytestring
+
+                    "inputId": "customer defined input identifier" //optional. alphanumeric
+
+                },
+                { // item 2 ... n
+                    // ...
+                }
+            ]
+
+        },
+
+        "patientInfo": {
+
+            "guarantor": [
+
+                {
+
+                    "address": [
+
+                        {
+
+                            "city": "City",
+
+                            "state": "State",
+
+                            "street1": "Street",
+
+                            "street2": "",
+
+                            "zip": "Zip"
+
+                        },
+                        {
+                            // ... additional guarantor addresses
+                        }
+
+                    ],
+
+                    "first": "First",
+
+                    "fullName": "Full",
+
+                    "last": "Last",
+
+                    "middle": "Middle",
+
+                    "phone": [
+
+                        {
+
+                            "number": "number", //10 digits. no dashes
+
+                            "type" : "home/work/mobile"
+
+                        },
+                        {
+                            // ... additional guarantor phone numbers
+                        }
+
+                    ],
+
+                    "relationship": "relationship to patient"
+
+                },
+                {
+                    // ... additional guarantors
+                }
+
+            ],
+
+            "insurance": [
+
+                {
+
+                    "address": {
+
+                        "city": "City",
+
+                        "state": "State",
+
+                        "street1": "Street",
+
+                        "street2": "",
+
+                        "zip": "Zip"
+
+                    },
+
+                    "company": "company",
+
+                    "policyPlanName": "Policy Plan Name",
+
+                    "groupId": "group",
+
+                    "phone": "phone", //10 digits. no dashes
+
+                    "phoneExt": "",
+
+                    "policyId": "policy",
+
+                    "priority": "priority"
+
+                },
+                {
+                    // ... additional insurance policies
+                }
+
+            ],
+
+            "patient": {
+
+                "accn": "account number",
+
+                "address": [
+
+                    {
+
+                        "city": "city",
+
+                        "state": "state",
+
+                        "street1": "street",
+
+                        "street2": "",
+
+                        "zip": "zip", 
+                        
+                    },
+                    {
+                        // ... additional patient addresses
+                    }
+
+                ],
+
+                "dob": "YYYY-MM-DD HH:MM:SS",  //date of birth
+
+                "first": "first",
+
+                "fullName": "full",
+
+                "last": "last",
+
+                "middle": "middle",
+
+                "suffix": "JR", //up to 3 chars. JR, SR, II, III, etc
+
+                "mrn": "mrn#", //alphanumeric. medical record number
+                
+                "ssn": "social security number", //no dashes. integers only.
+
+                "phone": [
+
+                    {
+
+                        "number": "phone number", //10 digits. no dashes
+                        
+                        "type": "home/work/mobile"
+
+                    },
+                    {
+                        // ... additional patient phone numbers
+                    }
+
+                ],
+
+                "sex": "M/F"
+
+            }
+
+        },
+
+
+
+        "careTeam": [
+            {
+            
+            "providerFirst": "first name", //john
+
+            "providerLast": "last name", //smith
+
+            "providerName": "full name", //john smith
+
+            "providerCredentials": "creds", //md, do, rn, crna, np, pa, etc
+
+            "providerId": "JACKN1", //provider identifier, defined by the customer / facility, optional
+            
+            "role": "See list of input entity source types at the bottom of this file", //Search for "Care Team List"
+
+            "startTime": "YYYY-MM-DD HH:MM:SS", //the time this provider started providing continuous care
+
+            "endTime": "YYYY-MM-DD HH:MM:SS" //the time this provider stopped providing continuous care
+                    
+            },
+            {
+                // ... add all members of the care team associated with the job/claim
+            }
+        ],
+
+
+        "facility": {
+
+            "name": "facility name",
+
+            "type":  "See list of input entiry sources as the bottom of this file", //Search for Facility List
+
+            "code": "PRDH", // vendor/customer facility identifier code, optional
+
+            "timeZone": "UTC Time Zone Abbreviations"  //Time zone applicable to location of care  https://en.wikipedia.org/wiki/List_of_time_zone_abbreviations
+
+        },
+
+        "jobInfo": {
+
+            "correlationId": "customer's internal ID",  //Optional, customer's internal identifier for this job/claim
+
+            "encounterNumber": "encounter number", //encounter number. typically unique to a specific patient encounter, i.e. specific surgical encounter
+            
+            "anesType": "anesthesia type", //general, mac, spinal, epidural, regional, combined
+
+            "asaps": "number between 1 and 6", //NAMECHANGE. ASA physical status code
+
+            "difficultIntubation": "Yes/No", //boolean
+
+            "emergent": "0 or 1", // boolean. was the case an emergency
+
+            "anesStartTime": "time", //anesthesia start time, "YYYY-MM-DD HH:MM:SS"
+
+            "anesEndTime": "time", // anesthesia end time, "YYYY-MM-DD HH:MM:SS"
+
+            "postNote": "number", // boolean. was a postoperative anesthesia note completed
+
+            "preNote": "number", // boolean. was a preoperative anesthesia note completed
+
+            "recSigned": "number", // boolean. comes across from some facilities to indicate a case encounter was 'signed completed' by the provider
+
+            "ORsuite": "OR Suite", //alphanumeric. the descriptive location the surgery was performed. examples: OR1, Endoscopy 1, Cataract Room 1, etc. typically these are uniqueish to a facility
+
+            "ORsuiteId": "OR Suite ID", //alphanumeric. linked to ORSuite, the id of the ORSUITE. examples: OR1, ENDO1, CATAR1, etc..
+        
+        }
+
+    }
+    
+}
+
+
+
+
+
+/*************************************************************************
+*   CLAIM ENTITY LINE ITEM KEY:VALUE COMBINATIONS
+
+    "lineItemId": "Line Item ID" // alphanumeric. customer's line item identifier for claim line item
+
+    "surgCPT": "CPT Code", //alphanumeric. typically the primary surgical cpt code(s), an anesthesia procedure code (nerve block, lines, etc), or a qualifying anesthesia circumstance cpt code (99100, 99116, 99135, 99140)
+
+    "anesCPT": "Primary Anesthetic CPT Code", //5 digit int. Should only exist if a surgCpt code is sent for the respective line item
+
+    "icd10" : "ICD10 Code", //alphanumeric. no periods
+
+    "modifier" : "Anesthesia Modifier Code", //alphanumeric. typically 2 characters
+
+    "providerFirst": "john", //provider first name
+
+    "providerLast": "smith", //provider last name
+
+    "providerName" : "john smith", //provider full name the line item will be billed under
+
+    "providerCredentials": "MD", //provider credentials. MD, DO, CRNA, AA, Resident, NP, PA
+    
+    "providerId" : "johnsm1", //provider id the line item will be billed under
+
+    "contractedUnitRate": "Contracted Unit Rate", //float. in dollars
+
+    "contractedAmount": "Contracted Amount", //float. in dollars
+
+    "totalUnits": "Total Units", //float (int ok)
+
+    "baseUnits": "Base Units", //float (int ok)
+
+    "timeUnits": "Time Units", //float (int ok)
+
+    "physicalStatusUnits": "ASA Physical Status Units", //float (int ok)
+
+    "ageUnits": "Age Units", //float (int ok)
+
+    "emergencyUnits": "Emergency Units", //float (int ok)
+
+    "otherUnits": "Other Units", //float (int ok)
+
+    "totalCharges": "Total Charges", //float. in dollars
+
+    "totalExpected": "Total Expected", //float. in dollars
+
+    "totalPaidUnits": "Total Paid by Insurance", //float. in dollars
+
+    "totalPaidSelf": "Total Paid by Self", //float. in dollars
+ 
+    "totalAdjusted": "Total Adjusted AMount", //float. in dollars
+
+    "totalPaid": "Total Amount Paid", //float. in dollars
+
+    "totalBalance": "Total Balance Remaining", //float. in dollars
+
+    "primaryInsurerPayment": "Primary Insurer Payment", //float. in dollars
+
+    "addiitionalInsurerPayment": "Additional Insurer Payment", //float. in dollars
+
+    "guarantorPayment": "Guarantor Payment", //float. in dollars
+
+    "contractAdjustment": "Contract Adjustment", //float. in dollars
+
+    "sequestorAdjustment": "Sequestor Adjustment", //float. in dollars
+
+    "incentiveAmount": "Incentive AMount", //float. in dollars
+
+    "withholdAmount": "Whithhold Amount", //float. in dollars
+
+    "writeoffAmount": "WriteOff Amount", //float. in dollars
+
+    "collectionsWriteoff":  "Collections Writeoff", //float. in dollars
+
+    "insuranceOpenBalance":  "Insurance Open Balance", //float. in dollars
+
+    "guarantorOpenBalance":  "Gurantor Open Balance", //float. in dollars
+
+    "firstClaimDate":  "First Claim Date", // YYYY-MM-DD HH:MM:SS 
+
+    "firstPaymentDate":  "First Payment Date", // YYYY-MM-DD HH:MM:SS
+
+    "lastPaymentDate":  "Last Payment Date", // YYYY-MM-DD HH:MM:SS
+
+    "collectionsWriteoffDate":  "Collections Writeoff Date" // YYYY-MM-DD HH:MM:SS
+
+****************************************************************************************/
+
+
+
+
+/*******************************************
+* Input Source List
+* list of key types
+
+    SurgeonProcedureNote //op note
+    AnesthesiaProcedureNote //nerve blocks, alines, central lines, etc.
+    AnesthesiaPreoperativeNote
+    AnesthesiaIntraoperativeNote
+    AnesthesiaPostoperativeNote
+    SurgeryDiagnosisDescription
+    SurgeryProcedureDescription
+
+********************************************/
+
+/*******************************************
+* Care Team List
+* list of key types
+
+    Surgeon
+    AnesSupervisor
+    AnesResident
+    CRNA
+    AA
+    SRNA
+    Nurse
+    NursePractitioner
+    Technician
+    SurgTech
+
+********************************************/
+
+/*******************************************
+* Facility List
+* list of key types
+
+    inpatient
+    outpatient
+    clinic
+
+********************************************/
+

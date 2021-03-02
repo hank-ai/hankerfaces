@@ -29,7 +29,7 @@ facilityMap = {
 }
 ##############################
 
-class PaintedHorseInterface():
+class NeptuneInterface():
     def __init__(self):
         self.data = None
         self.hde = HankHDE()
@@ -79,12 +79,12 @@ if 0:
     ########################################
     ########### USAGE EXAMPLES #############
     ########################################
-    paintedspecfp = ''
+    neptunespecfp = ''
 
     #instantiate the object
-    iface = PaintedHorseInterface()
+    iface = NeptuneInterface()
     #load the spec with mappings to your (i.e. hank's) fields
-    iface.loadSpec(xlsfilepath=paintedspecfp)
+    iface.loadSpec(xlsfilepath=neptunespecfp)
 
 
     #############################
@@ -123,7 +123,7 @@ if 0:
 
     print("Writing painted import file outputs ...")
     for fac, content in outdict.items():
-        outfilename='paintedhorseimport_{}.txt'.format(fac)
+        outfilename='neptuneimport_{}.txt'.format(fac)
         with open(outfilename, 'w') as f:
             print(" -> writing {}".format(outfilename))
             f.write(content)

@@ -78,7 +78,7 @@ class MedsuiteInterface():
 
    
     #loads 3 tables from xlsfilepath representing the field definitions, header definitions, and appendix definitions
-    def loadMedsuiteSpec(self, xlsfilepath, sheets={'fields': 'FIELDS','headers':'HEADERS', 'appendix':'APPENDIX'}):
+    def loadSpec(self, xlsfilepath, sheets={'fields': 'FIELDS','headers':'HEADERS', 'appendix':'APPENDIX'}):
         self.fspecdf = pd.read_excel(xlsfilepath, sheet_name=sheets.get('fields'))
         self.fspecdf['length'] = self.fspecdf['length'].fillna(0).astype(int) #in case you have blank rows that load nan and thus force this col to float
         self.fspecdf['fieldMandatory'] = self.fspecdf['fieldMandatory'].fillna('').astype(str) #in case you have blank rows that load nan
@@ -276,7 +276,7 @@ class MedsuiteInterface():
 
     #generates the ascii string to write to a file for import into medsuites, for a SINGLE json case input
     #assumes you've already loaded self with the hank job spec using loadHankJSON(...)
-    def generateMedsuiteImport(self, generateAll=True):
+    def convertFromHank(self, generateAll=True):
         if generateAll: self._generateALL()
         else: self._generateT() #always regenerate the trailer
 
@@ -287,7 +287,7 @@ class MedsuiteInterface():
     
     #medsuite can import multiple different cases in one file but ALL rows in the file MUST be for the SAME facility
     #this will return a dict of facility:medsuiteimportfileasciicontents
-    def generateMedsuiteImportBATCH(self, jsonstringlist):
+    def convertFromHankBatch(self, jsonstringlist):
         facilitydicts = defaultdict(list)
         facilityoutdict = {}
         for jsonstring in jsonstringlist:
@@ -314,7 +314,7 @@ class MedsuiteInterface():
 
 
 
-if 1:
+if 0:
     ########################################
     ########### USAGE EXAMPLES #############
     ########################################
@@ -323,7 +323,7 @@ if 1:
     #instantiate the object
     msi = MedsuiteInterface()
     #load the medsuite spec with mappings to your (i.e. hank's) fields
-    msi.loadMedsuiteSpec(xlsfilepath=medsuitespecfp)
+    msi.loadSpec(xlsfilepath=medsuitespecfp)
 
 
     #############################
@@ -332,7 +332,7 @@ if 1:
     #process a SINGLE hank job json and get the ascii contents of a file to import into medsuite
     sji = msi.hde.sampleJSON() #get an example json from the hankHDE class
     msi.loadHankJSON(sji)
-    msi.generateMedsuiteImport()
+    msi.convertFromHank()
 
 
     #######################################
@@ -358,7 +358,7 @@ if 1:
             print("  -> continuing ...")
     print("Done loading.")
 
-    outdict = msi.generateMedsuiteImportBATCH(jsonstringlist=jsonstrings)
+    outdict = msi.convertFromHankBatch(jsonstringlist=jsonstrings)
 
     print("Writing medsuite import file outputs ...")
     for fac, content in outdict.items():
