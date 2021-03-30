@@ -77,6 +77,7 @@
      <ul>
       <li><a href="#abeo-medsuite-conversion">Abeo Medsuite</a></li>
       <li><a href="#painted-horse-international-phi-conversion">PHI (Painted Horse International)</a></li>
+      <li><a href="#sierra-medlink-conversion">Sierra Medlink</a></li>
       <li><a href="#blue9-neptune-conversion">blue9 Neptune</a></li>
      </ul>
     </li>
@@ -95,7 +96,7 @@
 This project includes the hank.ai data-exchange specification and examples, conversion classes (python), and resulting 3rd party import examples
 
 ### Hank.ai JSON Specification:
-* [Hank-AI-BillingandHealthDataExchange-Version-02-022021.JSON]('Hank-AI-BillingandHealthDataExchange-Version-02-022021.JSON') (note: best viewed as 'json with comments' in vscode)
+* [Hank-AI-BillingandHealthDataExchange-Version-02-022021.JSON](Hank-AI-BillingandHealthDataExchange-Version-02-022021.JSON) (note: best viewed as 'json with comments' in vscode)
 
 
 
@@ -199,7 +200,7 @@ print("DONE.")
 ```
 #
 
-## Painted Horse International (PHI) conversion:
+## Painted Horse Incorporated (PHI) conversion:
 1. define file locations
 ```python3
 phispecfp = 'PHI/spec.csv'
@@ -219,6 +220,26 @@ under development
 ```
 
 
+## Sierra Medlink conversion:
+1. define file locations
+```python3
+medlinkspecfp = 'medlink/spec.csv'
+```
+2. import and instantiate an instance of the medlink interface class
+```python3
+from sierra import medlink
+smli = medlink.MedlinkInterface()
+```
+### Process a single example record (hank.ai -> medlink)
+```
+under development
+```
+### Process a single example record (medlink -> hank.ai)
+```
+under development
+```
+
+
 
 
 #
@@ -231,7 +252,7 @@ neptunespecfp = 'blue9/spec.csv'
 2. import and instantiate an instance of the neptune interface class
 ```python3
 from blue9 import neptune
-nhi = neptune.NeptuneInterface()
+bni = neptune.NeptuneInterface()
 ```
 ### Process a single example record (hank.ai -> neptune)
 ```
@@ -285,6 +306,7 @@ Project Link: [https://github.com/hank-ai/hankerfaces](https://github.com/hank-a
 
 * [abeo](https://abeo.com)
 * [phi](https://phimedos.com)
+* [sierra health/medlink](https://sierrahealth.net/the-sierra-healthcare-companies/)
 * [blue9](https://blueninesystems.com)
 
 
