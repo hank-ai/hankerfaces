@@ -37,7 +37,7 @@ def cutOrPad(val, length, cutfrom='right', padfrom='right', padchar=' '):
         else: return val.ljust(length, padchar)
     return val
     
-specials_bidict = bidict({ #line item types based upon cpt codes, for billing data mapping
+specials_dict = bidict({ #line item types based upon cpt codes, for billing data mapping
     'proc-line-arterial': ['36620', '36625'],
     'proc-line-central': ['36555', '36556', '36557', '36558'],
     'proc-line-swan': ['93503'],
@@ -47,15 +47,18 @@ specials_bidict = bidict({ #line item types based upon cpt codes, for billing da
     'ob': ['01961','01962','01967','01968'],
     'ultrasoundguidance': ['76942'],
     'proc-intubation': ['31500'],
-    'proc-nerveblock': [str(x).zfill(5) for x in range(64400, 64531)],
+    'proc-nerveblock': [str(x).zfill(5) for x in range(64400, 64532)],
     'primary-extremeage': ['99100'],
     'primary-hypothermia': ['99116'],
     'primary-hypotension': ['99115'],
     'primary-emergent': ['99140'],
     'primary-anesthesia': [str(x).zfill(5) for x in range(100, 1999) if x not in [1953,1996]]
-    })
+})
+specials_dict['primary-surgical'] = [str(x).zfill(5) for x in range(10004, 69991) if str(x).zfill(5) not in specials_dict.inverse.keys()]
+specials_dict['other'] = [str(x).zfill(5) for x in range(0, 100000) if str(x).zfill(5) not in specials_dict.inverse.keys()]
 
-testj = {
+
+testjstr = {
             'job':{
                 'claim': [
                     {

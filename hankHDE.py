@@ -6,6 +6,7 @@ from collections import OrderedDict, Counter
 from dotmap import DotMap #to allow specs to have a column that references keys in the hank spec via something like job.patient.addres
 
 from include.defs import *
+from include.defs import testjstr
 
 class HankHDE():
     def __init__(self):
@@ -41,11 +42,13 @@ class HankHDE():
 
     #add a few custom fields that make mapping from other systems easier for anesthesia case types and claims
     def addAnesthesiaFields(self):
+        self.job['surgcpts'] = self.claimdf[self.claimdf['type']=='SurgCPT']['entityValue'].value_counts().keys().to_list() #makes sure the surgcpts are ordered most frequest to least from the lineitems
+        self.job['anescpts'] = self.claimdf[self.claimdf['type']=='AnesCPT']['entityValue'].value_counts().keys().to_list() #makes sure the anescpts are ordered most frequest to least from the lineitems
         self.job['icd10s'] = self.claimdf[self.claimdf['type']=='icd10']['entityValue'].value_counts().keys().to_list() #makes sure the icds are ordered most frequest to least from the lineitems
-        self.job['modifiers'] = self.claimdf[self.claimdf['type']=='modifier']['entityValue'].value_counts().keys().to_list() #makes sure the icds are ordered most frequest to least from the lineitems
+        self.job['modifiers'] = self.claimdf[self.claimdf['type']=='modifier']['entityValue'].value_counts().keys().to_list() #makes sure the modifiers are ordered most frequest to least from the lineitems
         
-        for tm in self.job.get('careTeam'):
-            if tm.get('role').lower()=='surgeon':
+        for tm in self.job.get('careTeam',[]):
+            if tm.get('role','').lower()=='surgeon':
                 self.job['surgeonFirst']=tm.get('providerFirst')
                 self.job['surgeonLast']=tm.get('providerLast')
                 self.job['surgeonId']=tm.get('providerId')
@@ -62,7 +65,7 @@ class HankHDE():
 ########### USAGE EXAMPLES #############
 ########################################
 
-#instatiate the object
+#instantiate the object
 hde = HankHDE()
 #hde.loadFromJSON(json.dumps(testj))
 #load a json string (testjstr is hardcoded as an example in this file above)
